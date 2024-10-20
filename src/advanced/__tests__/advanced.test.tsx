@@ -7,6 +7,7 @@ import { CartItem, Coupon, Product } from '../../types';
 import * as cartUtils from "../../refactoring/hooks/utils/cartUtils";
 import * as couponUtils from "../../refactoring/hooks/utils/couponUtils";
 import * as productUtils from "../../refactoring/hooks/utils/productUtils";
+import * as cartService from "../../refactoring/services/cartService";
 
 const mockProducts: Product[] = [
   {
@@ -310,6 +311,41 @@ describe('advanced > ', () => {
           ...products[0],
           name: "Updated Product",
         });
+      });
+    })
+  })
+
+  describe('cartService > ', () => {
+    const product: Product = { 
+      id: '1', 
+      name: 'Product 1', 
+      price: 1000, 
+      stock: 50, 
+      discounts: [{ quantity: 10, rate: 0.1 }, { quantity: 20, rate: 0.2 }] 
+    };
+    const cart: CartItem[] = [{product, quantity: 10}];
+
+    describe('calculateRemainingStock > ', () => {
+      test('장바구니에 담긴 상태에서 제품에 대한 재고가 계산되어야 합니다.', () => {
+        
+        const result = cartService.calculateRemainingStock(cart, product);
+        expect(result).toBe(40);
+      });
+    })
+
+    describe('calculateMaxDiscount > ', () => {
+      test('할인 목록 중 최대 할인율이 계산되어야 합니다.', () => {
+        const { discounts } = product;
+        const result = cartService.calculateMaxDiscount(discounts);
+        expect(result).toBe(0.2);
+      });
+    })
+
+    describe('calculateAppliedMaxDiscount > ', () => {
+      test('적용 가능한 최대 할인율이 계산되어야 합니다. ', () => {
+        const [item] = cart;
+        const result = cartService.calculateAppliedMaxDiscount(item);
+        expect(result).toBe(0.1);
       });
     })
   })

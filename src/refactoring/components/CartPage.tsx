@@ -1,5 +1,10 @@
-import { CartItem, Coupon, Product } from '../../types.ts';
+import { CartItem, Coupon, Discount, Product } from '../../types.ts';
 import { useCart } from "../hooks";
+import { 
+  calculateAppliedMaxDiscount, 
+  calculateMaxDiscount, 
+  calculateRemainingStock
+} from '../services/cartService.ts';
 
 interface Props {
   products: Product[];
@@ -17,28 +22,15 @@ export const CartPage = ({ products, coupons }: Props) => {
     selectedCoupon
   } = useCart();
 
-  const getMaxDiscount = (discounts: { quantity: number; rate: number }[]) => {
-    return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
-  };
-
-  const getRemainingStock = (product: Product) => {
-    const cartItem = cart.find(item => item.product.id === product.id);
-    return product.stock - (cartItem?.quantity || 0);
-  };
-
-  const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal()
-
-  const getAppliedDiscount = (item: CartItem) => {
-    const { discounts } = item.product;
-    const { quantity } = item;
-    let appliedDiscount = 0;
-    for (const discount of discounts) {
-      if (quantity >= discount.quantity) {
-        appliedDiscount = Math.max(appliedDiscount, discount.rate);
-      }
-    }
-    return appliedDiscount;
-  };
+  const getRemainingStock = (product: Product) => calculateRemainingStock(cart, product);
+  const getMaxDiscount = (discounts: Discount[]) => calculateMaxDiscount(discounts);
+  const getAppliedDiscount = (item: CartItem) => calculateAppliedMaxDiscount(item);
+  
+  const { 
+    totalBeforeDiscount, 
+    totalAfterDiscount, 
+    totalDiscount 
+  } = calculateTotal();
 
   return (
     <div className="container mx-auto p-4">
