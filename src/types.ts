@@ -1,22 +1,22 @@
-export interface Product {
+export interface IProduct {
   id: string;
   name: string;
   price: number;
   stock: number;
-  discounts: Discount[];
+  discounts: IDiscount[];
 }
 
-export interface Discount {
+export interface IDiscount {
   quantity: number;
   rate: number;
 }
 
-export interface CartItem {
-  product: Product;
+export interface ICartItem {
+  product: IProduct;
   quantity: number;
 }
 
-export interface Coupon {
+export interface ICoupon {
   name: string;
   code: string;
   discountType: 'amount' | 'percentage';

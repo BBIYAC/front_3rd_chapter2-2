@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import { CartItem, Coupon, Product } from '../../types.ts';
+import { ICartItem, ICoupon, IProduct } from '../../types.ts';
 
 interface Props {
-  products: Product[];
-  coupons: Coupon[];
+  products: IProduct[];
+  coupons: ICoupon[];
 }
 
 export const CartPage = ({ products, coupons }: Props) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+  const [cart, setCart] = useState<ICartItem[]>([]);
+  const [selectedCoupon, setSelectedCoupon] = useState<ICoupon | null>(null);
 
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: IProduct) => {
     const remainingStock = getRemainingStock(product);
     if (remainingStock <= 0) return;
 
@@ -41,7 +41,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           return updatedQuantity > 0 ? { ...item, quantity: updatedQuantity } : null;
         }
         return item;
-      }).filter((item): item is CartItem => item !== null)
+      }).filter((item): item is ICartItem => item !== null)
     );
   };
 
@@ -85,14 +85,14 @@ export const CartPage = ({ products, coupons }: Props) => {
     return discounts.reduce((max, discount) => Math.max(max, discount.rate), 0);
   };
 
-  const getRemainingStock = (product: Product) => {
+  const getRemainingStock = (product: IProduct) => {
     const cartItem = cart.find(item => item.product.id === product.id);
     return product.stock - (cartItem?.quantity || 0);
   };
 
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } = calculateTotal()
 
-  const getAppliedDiscount = (item: CartItem) => {
+  const getAppliedDiscount = (item: ICartItem) => {
     const { discounts } = item.product;
     const { quantity } = item;
     let appliedDiscount = 0;
@@ -104,7 +104,7 @@ export const CartPage = ({ products, coupons }: Props) => {
     return appliedDiscount;
   };
 
-  const applyCoupon = (coupon: Coupon) => {
+  const applyCoupon = (coupon: ICoupon) => {
     setSelectedCoupon(coupon);
   };
 

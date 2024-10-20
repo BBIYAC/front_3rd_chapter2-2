@@ -1,26 +1,26 @@
 import { useState } from 'react';
-import { Coupon, Discount, Product } from '../../types.ts';
+import { ICoupon, IDiscount, IProduct } from '../../types.ts';
 
 interface Props {
-  products: Product[];
-  coupons: Coupon[];
-  onProductUpdate: (updatedProduct: Product) => void;
-  onProductAdd: (newProduct: Product) => void;
-  onCouponAdd: (newCoupon: Coupon) => void;
+  products: IProduct[];
+  coupons: ICoupon[];
+  onProductUpdate: (updatedProduct: IProduct) => void;
+  onProductAdd: (newProduct: IProduct) => void;
+  onCouponAdd: (newCoupon: ICoupon) => void;
 }
 
 export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, onCouponAdd }: Props) => {
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [newDiscount, setNewDiscount] = useState<Discount>({ quantity: 0, rate: 0 });
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
+  const [editingProduct, setEditingProduct] = useState<IProduct | null>(null);
+  const [newDiscount, setNewDiscount] = useState<IDiscount>({ quantity: 0, rate: 0 });
+  const [newCoupon, setNewCoupon] = useState<ICoupon>({
     name: '',
     code: '',
     discountType: 'percentage',
     discountValue: 0
   });
   const [showNewProductForm, setShowNewProductForm] = useState(false);
-  const [newProduct, setNewProduct] = useState<Omit<Product, 'id'>>({
+  const [newProduct, setNewProduct] = useState<Omit<IProduct, 'id'>>({
     name: '',
     price: 0,
     stock: 0,
@@ -40,7 +40,7 @@ export const AdminPage = ({ products, coupons, onProductUpdate, onProductAdd, on
   };
 
   // handleEditProduct 함수 수정
-  const handleEditProduct = (product: Product) => {
+  const handleEditProduct = (product: IProduct) => {
     setEditingProduct({...product});
   };
 

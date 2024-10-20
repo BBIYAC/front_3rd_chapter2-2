@@ -3,13 +3,13 @@ import { describe, expect, test } from 'vitest';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { CartPage } from '../../refactoring/components/CartPage';
 import { AdminPage } from "../../refactoring/components/AdminPage";
-import { CartItem, Coupon, Product } from '../../types';
+import { ICartItem, ICoupon, IProduct } from '../../types';
 import * as cartUtils from "../../refactoring/hooks/utils/cartUtils";
 import * as couponUtils from "../../refactoring/hooks/utils/couponUtils";
 import * as productUtils from "../../refactoring/hooks/utils/productUtils";
 import * as cartService from "../../refactoring/services/cartService";
 
-const mockProducts: Product[] = [
+const mockProducts: IProduct[] = [
   {
     id: 'p1',
     name: '상품1',
@@ -32,7 +32,7 @@ const mockProducts: Product[] = [
     discounts: [{ quantity: 10, rate: 0.2 }]
   }
 ];
-const mockCoupons: Coupon[] = [
+const mockCoupons: ICoupon[] = [
   {
     name: '5000원 할인 쿠폰',
     code: 'AMOUNT5000',
@@ -48,21 +48,21 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
+  const [products, setProducts] = useState<IProduct[]>(mockProducts);
+  const [coupons, setCoupons] = useState<ICoupon[]>(mockCoupons);
 
 
-  const handleProductUpdate = (updatedProduct: Product) => {
+  const handleProductUpdate = (updatedProduct: IProduct) => {
     setProducts(prevProducts =>
       prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
     );
   };
 
-  const handleProductAdd = (newProduct: Product) => {
+  const handleProductAdd = (newProduct: IProduct) => {
     setProducts(prevProducts => [...prevProducts, newProduct]);
   };
 
-  const handleCouponAdd = (newCoupon: Coupon) => {
+  const handleCouponAdd = (newCoupon: ICoupon) => {
     setCoupons(prevCoupons => [...prevCoupons, newCoupon]);
   };
 
@@ -257,7 +257,7 @@ describe('advanced > ', () => {
   
     describe('addToCartItem > ', () => {
       test('장바구니에 제품이 추가되어야 합니다. ', () => {
-        const cart: CartItem[] = [];
+        const cart: ICartItem[] = [];
         const result = cartUtils.addToCartItem(cart, mockProducts[0]);
         expect(result).toHaveLength(1);
         expect(result[0]).toEqual({ product: mockProducts[0], quantity: 1 });
@@ -266,7 +266,7 @@ describe('advanced > ', () => {
   
     describe('removeFromCartItem > ', () => {
       test('장바구니에서 제품이 삭제되어야 합니다. ', () => {
-        const cart: CartItem[] = [{ product: mockProducts[0], quantity: 1 }];
+        const cart: ICartItem[] = [{ product: mockProducts[0], quantity: 1 }];
         const result = cartUtils.removeFromCartItem(cart, 'p1');
         expect(result).toHaveLength(0);
       });
@@ -276,7 +276,7 @@ describe('advanced > ', () => {
   describe('couponUtils > ', () => {
     describe('addCouponItem > ', () => {
       test('쿠폰함에 쿠폰이 추가되어야 합니다. ', () => {
-        const coupons: Coupon[] = [];
+        const coupons: ICoupon[] = [];
         const result = couponUtils.addCouponItem(coupons, mockCoupons[0]);
         expect(result).toHaveLength(1);
         expect(result[0]).toEqual(mockCoupons[0]);
@@ -287,7 +287,7 @@ describe('advanced > ', () => {
   describe('productUtils > ', () => {
     describe('addProductItem > ', () => {
       test('제품 리스트에 제품이 추가되어야 합니다. ', () => {
-        const products: Product[] = [];
+        const products: IProduct[] = [];
         const result = productUtils.addProductItem(products, mockProducts[0]);
         expect(result).toHaveLength(1);
         expect(result[0]).toEqual(mockProducts[0]);
@@ -296,7 +296,7 @@ describe('advanced > ', () => {
 
     describe('updateProductInfo > ', () => {
       test('제품 개수에 영향 없이 해당 제품에 대한 수정이 되어야 합니다. ', () => {
-        const products: Product[] = [...mockProducts];
+        const products: IProduct[] = [...mockProducts];
         const updatedProduct = { ...products[0], name: 'Updated Product' };
         const result = productUtils.updateProductInfo(products, updatedProduct);
         expect(result).toHaveLength(3);
@@ -309,14 +309,14 @@ describe('advanced > ', () => {
   })
 
   describe('cartService > ', () => {
-    const product: Product = { 
+    const product: IProduct = { 
       id: '1', 
       name: 'Product 1', 
       price: 1000, 
       stock: 50, 
       discounts: [{ quantity: 10, rate: 0.1 }, { quantity: 20, rate: 0.2 }] 
     };
-    const cart: CartItem[] = [{product, quantity: 10}];
+    const cart: ICartItem[] = [{product, quantity: 10}];
 
     describe('getRemainingStock > ', () => {
       test('장바구니에 담긴 상태에서 제품에 대한 재고가 반환되어야 합니다.', () => {

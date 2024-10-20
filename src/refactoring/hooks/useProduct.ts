@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { Product } from "../../types.ts";
+import { IProduct } from "../../types.ts";
 import { addProductItem, updateProductInfo } from "./utils/productUtils.ts";
 
-export const useProducts = (initialProducts: Product[]) => {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+export const useProducts = (initialProducts: IProduct[]) => {
+  const [products, setProducts] = useState<IProduct[]>(initialProducts);
 
-  const updateProduct = (updatedProduct: Product) => {
+  const updateProduct = (updatedProduct: IProduct) => {
     setProducts((prevProducts) =>
       updateProductInfo(prevProducts, updatedProduct)
     );
   };
 
-  const addProduct = (newProduct: Product) => {
+  const addProduct = (newProduct: IProduct) => {
     setProducts((prevProducts) => addProductItem(prevProducts, newProduct));
   };
 

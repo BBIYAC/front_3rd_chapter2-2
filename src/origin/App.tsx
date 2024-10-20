@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { CartPage } from './components/CartPage.tsx';
 import { AdminPage } from './components/AdminPage.tsx';
-import { Coupon, Product } from '../types.ts';
+import { ICoupon, IProduct } from '../types.ts';
 
-const initialProducts: Product[] = [
+const initialProducts: IProduct[] = [
   {
     id: 'p1',
     name: '상품1',
@@ -27,7 +27,7 @@ const initialProducts: Product[] = [
   }
 ];
 
-const initialCoupons: Coupon[] = [
+const initialCoupons: ICoupon[] = [
   {
     name: '5000원 할인 쿠폰',
     code: 'AMOUNT5000',
@@ -43,21 +43,21 @@ const initialCoupons: Coupon[] = [
 ];
 
 const App = () => {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(initialCoupons);
+  const [products, setProducts] = useState<IProduct[]>(initialProducts);
+  const [coupons, setCoupons] = useState<ICoupon[]>(initialCoupons);
   const [isAdmin, setIsAdmin] = useState(false);
 
-  const handleProductUpdate = (updatedProduct: Product) => {
+  const handleProductUpdate = (updatedProduct: IProduct) => {
     setProducts(prevProducts =>
       prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
     );
   };
 
-  const handleProductAdd = (newProduct: Product) => {
+  const handleProductAdd = (newProduct: IProduct) => {
     setProducts(prevProducts => [...prevProducts, newProduct]);
   };
 
-  const handleCouponAdd = (newCoupon: Coupon) => {
+  const handleCouponAdd = (newCoupon: ICoupon) => {
     setCoupons(prevCoupons => [...prevCoupons, newCoupon]);
   };
 

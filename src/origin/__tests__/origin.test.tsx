@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'vitest';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { CartPage } from '../components/CartPage';
-import { Coupon, Product } from '../../types';
+import { ICoupon, IProduct } from '../../types';
 import { AdminPage } from "../components/AdminPage.tsx";
 import { useState } from "react";
 
-const mockProducts: Product[] = [
+const mockProducts: IProduct[] = [
   {
     id: 'p1',
     name: '상품1',
@@ -28,7 +28,7 @@ const mockProducts: Product[] = [
     discounts: [{ quantity: 10, rate: 0.2 }]
   }
 ];
-const mockCoupons: Coupon[] = [
+const mockCoupons: ICoupon[] = [
   {
     name: '5000원 할인 쿠폰',
     code: 'AMOUNT5000',
@@ -44,21 +44,21 @@ const mockCoupons: Coupon[] = [
 ];
 
 const TestAdminPage = () => {
-  const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [coupons, setCoupons] = useState<Coupon[]>(mockCoupons);
+  const [products, setProducts] = useState<IProduct[]>(mockProducts);
+  const [coupons, setCoupons] = useState<ICoupon[]>(mockCoupons);
 
 
-  const handleProductUpdate = (updatedProduct: Product) => {
+  const handleProductUpdate = (updatedProduct: IProduct) => {
     setProducts(prevProducts =>
       prevProducts.map(p => p.id === updatedProduct.id ? updatedProduct : p)
     );
   };
 
-  const handleProductAdd = (newProduct: Product) => {
+  const handleProductAdd = (newProduct: IProduct) => {
     setProducts(prevProducts => [...prevProducts, newProduct]);
   };
 
-  const handleCouponAdd = (newCoupon: Coupon) => {
+  const handleCouponAdd = (newCoupon: ICoupon) => {
     setCoupons(prevCoupons => [...prevCoupons, newCoupon]);
   };
 

@@ -1,7 +1,7 @@
-import { CartItem, Coupon, Product } from "../../../types";
+import { ICartItem, ICoupon, IProduct } from "../../../types";
 
 export const calculateItemTotal = (
-  item: CartItem,
+  item: ICartItem,
   applyDiscount: boolean = true
 ) => {
   const { price } = item.product;
@@ -11,7 +11,7 @@ export const calculateItemTotal = (
   return price * quantity * (1 - applicableDiscount);
 };
 
-export const getMaxApplicableDiscount = (item: CartItem) => {
+export const getMaxApplicableDiscount = (item: ICartItem) => {
   const { discounts } = item.product;
   const { quantity } = item;
 
@@ -24,7 +24,7 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   return maxDiscount;
 };
 
-export const applyCouponDiscount = (total: number, coupon: Coupon | null) => {
+export const applyCouponDiscount = (total: number, coupon: ICoupon | null) => {
   if (!coupon) return total;
 
   if (coupon.discountType === "amount") {
@@ -35,13 +35,13 @@ export const applyCouponDiscount = (total: number, coupon: Coupon | null) => {
 };
 
 export const calculateCartTotal = (
-  cart: CartItem[],
-  selectedCoupon: Coupon | null
+  cart: ICartItem[],
+  selectedCoupon: ICoupon | null
 ) => {
-  const totalBeforeDiscount = cart.reduce((total: number, item: CartItem) => {
+  const totalBeforeDiscount = cart.reduce((total: number, item: ICartItem) => {
     return total + calculateItemTotal(item, false);
   }, 0);
-  const totalAfterDiscount = cart.reduce((total: number, item: CartItem) => {
+  const totalAfterDiscount = cart.reduce((total: number, item: ICartItem) => {
     return total + calculateItemTotal(item);
   }, 0);
   const totalAfterCoupon = applyCouponDiscount(totalAfterDiscount, selectedCoupon);
@@ -55,10 +55,10 @@ export const calculateCartTotal = (
 };
 
 export const updateCartItemQuantity = (
-  cart: CartItem[],
+  cart: ICartItem[],
   productId: string,
   newQuantity: number
-): CartItem[] => {
+): ICartItem[] => {
   return cart
     .map((item) => {
       if (item.product.id === productId) {
@@ -70,10 +70,10 @@ export const updateCartItemQuantity = (
       }
       return item;
     })
-    .filter((item): item is CartItem => item !== null);
+    .filter((item): item is ICartItem => item !== null);
 };
 
-export const addToCartItem = (cart: CartItem[], product: Product): CartItem[] => {
+export const addToCartItem = (cart: ICartItem[], product: IProduct): ICartItem[] => {
   const existingItem = cart.find(
     (item) => item.product.id === product.id
   );
@@ -87,6 +87,6 @@ export const addToCartItem = (cart: CartItem[], product: Product): CartItem[] =>
   return [...cart, { product, quantity: 1 }];
 }
 
-export const removeFromCartItem = (cart: CartItem[], productId: string): CartItem[] => {
+export const removeFromCartItem = (cart: ICartItem[], productId: string): ICartItem[] => {
   return cart.filter((item) => item.product.id !== productId)
 }
