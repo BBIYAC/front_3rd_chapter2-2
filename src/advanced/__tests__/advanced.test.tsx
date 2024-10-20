@@ -6,6 +6,7 @@ import { AdminPage } from "../../refactoring/components/AdminPage";
 import { CartItem, Coupon, Product } from '../../types';
 import * as cartUtils from "../../refactoring/hooks/utils/cartUtils";
 import * as couponUtils from "../../refactoring/hooks/utils/couponUtils";
+import * as productUtils from "../../refactoring/hooks/utils/productUtils";
 
 const mockProducts: Product[] = [
   {
@@ -284,7 +285,32 @@ describe('advanced > ', () => {
       });
     })
   })
+  
+  describe('productUtils > ', () => {
+    describe('addProductItem > ', () => {
+      test('제품 리스트에 제품이 추가되어야 합니다. ', () => {
+        const products: Product[] = [];
+  
+        const result = productUtils.addProductItem(products, mockProducts[0]);
+        expect(result).toHaveLength(1);
+        expect(result[0]).toEqual(mockProducts[0]);
+      });
+    })
+
+    describe('updateProductInfo > ', () => {
+      test('제품에 대한 수정이 되어야 합니다. ', () => {
+        const products: Product[] = [
+          { id: '1', name: 'Product 1', price: 100, stock: 10, discounts: [] },
+        ];
+        const updatedProduct = { ...products[0], name: 'Updated Product' };
+  
+        const result = productUtils.updateProductInfo(products, updatedProduct);
+        expect(result).toHaveLength(1);
+        expect(result[0]).toEqual({
+          ...products[0],
+          name: "Updated Product",
+        });
+      });
     })
   })
 })
-
