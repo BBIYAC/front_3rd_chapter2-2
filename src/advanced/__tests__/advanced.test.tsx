@@ -5,6 +5,7 @@ import { CartPage } from '../../refactoring/components/CartPage';
 import { AdminPage } from "../../refactoring/components/AdminPage";
 import { CartItem, Coupon, Product } from '../../types';
 import * as cartUtils from "../../refactoring/hooks/utils/cartUtils";
+import * as couponUtils from "../../refactoring/hooks/utils/couponUtils";
 
 const mockProducts: Product[] = [
   {
@@ -268,6 +269,18 @@ describe('advanced > ', () => {
   
         const result = cartUtils.removeFromCartItem(cart, 'p1');
         expect(result).toHaveLength(0);
+      });
+    })
+  })
+
+  describe('couponUtils > ', () => {
+    describe('addCouponItem > ', () => {
+      test('쿠폰함에 쿠폰이 추가되어야 합니다. ', () => {
+        const coupons: Coupon[] = [];
+  
+        const result = couponUtils.addCouponItem(coupons, mockCoupons[0]);
+        expect(result).toHaveLength(1);
+        expect(result[0]).toEqual(mockCoupons[0]);
       });
     })
   })
