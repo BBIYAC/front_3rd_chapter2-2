@@ -3,7 +3,8 @@ import { describe, expect, test } from 'vitest';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { CartPage } from '../../refactoring/components/CartPage';
 import { AdminPage } from "../../refactoring/components/AdminPage";
-import { Coupon, Product } from '../../types';
+import { CartItem, Coupon, Product } from '../../types';
+import * as cartUtils from "../../refactoring/hooks/utils/cartUtils";
 
 const mockProducts: Product[] = [
   {
@@ -231,13 +232,45 @@ describe('advanced > ', () => {
     })
   })
 
-  describe('자유롭게 작성해보세요.', () => {
-    test('새로운 유틸 함수를 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  describe('cartUtils > ', () => {
+    describe('applyCouponDiscount > ', () => {
+      const totalBeforeDiscount = 20000;
+  
+      test('쿠폰 없이 총액을 올바르게 계산해야 합니다.', () => {
+        const result = cartUtils.applyCouponDiscount(totalBeforeDiscount, null);
+        expect(result).toBe(20000);
+      });
+  
+      test('금액쿠폰을 올바르게 적용해야 합니다.', () => {
+        const result = cartUtils.applyCouponDiscount(totalBeforeDiscount, mockCoupons[0]);
+        expect(result).toBe(15000);
+      });
+  
+      test('퍼센트 쿠폰을 올바르게 적용해야 합니다', () => {
+        const result = cartUtils.applyCouponDiscount(totalBeforeDiscount, mockCoupons[1]);
+        expect(result).toBe(18000);
+      });
     })
-
-    test('새로운 hook 함수르 만든 후에 테스트 코드를 작성해서 실행해보세요', () => {
-      expect(true).toBe(false);
+  
+    describe('addToCartItem > ', () => {
+      test('장바구니에 제품이 추가되어야 합니다. ', () => {
+        const cart: CartItem[] = [];
+  
+        const result = cartUtils.addToCartItem(cart, mockProducts[0]);
+        expect(result).toHaveLength(1);
+        expect(result[0]).toEqual({ product: mockProducts[0], quantity: 1 });
+      });
+    })
+  
+    describe('removeFromCartItem > ', () => {
+      test('장바구니에서 제품이 삭제되어야 합니다. ', () => {
+        const cart: CartItem[] = [{ product: mockProducts[0], quantity: 1 }];
+  
+        const result = cartUtils.removeFromCartItem(cart, 'p1');
+        expect(result).toHaveLength(0);
+      });
+    })
+  })
     })
   })
 })

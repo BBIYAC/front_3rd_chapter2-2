@@ -1,4 +1,4 @@
-import { CartItem, Coupon } from "../../../types";
+import { CartItem, Coupon, Product } from "../../../types";
 
 export const calculateItemTotal = (
   item: CartItem,
@@ -24,7 +24,7 @@ export const getMaxApplicableDiscount = (item: CartItem) => {
   return maxDiscount;
 };
 
-const applyCoupon = (total: number, coupon: Coupon | null) => {
+export const applyCouponDiscount = (total: number, coupon: Coupon | null) => {
   if (!coupon) return total;
 
   if (coupon.discountType === "amount") {
@@ -44,7 +44,7 @@ export const calculateCartTotal = (
   const totalAfterDiscount = cart.reduce((total: number, item: CartItem) => {
     return total + calculateItemTotal(item);
   }, 0);
-  const totalAfterCoupon = applyCoupon(totalAfterDiscount, selectedCoupon);
+  const totalAfterCoupon = applyCouponDiscount(totalAfterDiscount, selectedCoupon);
   const totalDiscount = totalBeforeDiscount - totalAfterCoupon;
 
   return {
@@ -72,3 +72,21 @@ export const updateCartItemQuantity = (
     })
     .filter((item): item is CartItem => item !== null);
 };
+
+export const addToCartItem = (cart: CartItem[], product: Product): CartItem[] => {
+  const existingItem = cart.find(
+    (item) => item.product.id === product.id
+  );
+  if (existingItem) {
+    return cart.map((item) =>
+      item.product.id === product.id
+        ? { ...item, quantity: Math.min(item.quantity + 1, product.stock) }
+        : item
+    );
+  }
+  return [...cart, { product, quantity: 1 }];
+}
+
+export const removeFromCartItem = (cart: CartItem[], productId: string): CartItem[] => {
+  return cart.filter((item) => item.product.id !== productId)
+}
