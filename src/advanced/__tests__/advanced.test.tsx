@@ -258,7 +258,6 @@ describe('advanced > ', () => {
     describe('addToCartItem > ', () => {
       test('장바구니에 제품이 추가되어야 합니다. ', () => {
         const cart: CartItem[] = [];
-  
         const result = cartUtils.addToCartItem(cart, mockProducts[0]);
         expect(result).toHaveLength(1);
         expect(result[0]).toEqual({ product: mockProducts[0], quantity: 1 });
@@ -268,7 +267,6 @@ describe('advanced > ', () => {
     describe('removeFromCartItem > ', () => {
       test('장바구니에서 제품이 삭제되어야 합니다. ', () => {
         const cart: CartItem[] = [{ product: mockProducts[0], quantity: 1 }];
-  
         const result = cartUtils.removeFromCartItem(cart, 'p1');
         expect(result).toHaveLength(0);
       });
@@ -279,7 +277,6 @@ describe('advanced > ', () => {
     describe('addCouponItem > ', () => {
       test('쿠폰함에 쿠폰이 추가되어야 합니다. ', () => {
         const coupons: Coupon[] = [];
-  
         const result = couponUtils.addCouponItem(coupons, mockCoupons[0]);
         expect(result).toHaveLength(1);
         expect(result[0]).toEqual(mockCoupons[0]);
@@ -291,7 +288,6 @@ describe('advanced > ', () => {
     describe('addProductItem > ', () => {
       test('제품 리스트에 제품이 추가되어야 합니다. ', () => {
         const products: Product[] = [];
-  
         const result = productUtils.addProductItem(products, mockProducts[0]);
         expect(result).toHaveLength(1);
         expect(result[0]).toEqual(mockProducts[0]);
@@ -299,14 +295,11 @@ describe('advanced > ', () => {
     })
 
     describe('updateProductInfo > ', () => {
-      test('제품에 대한 수정이 되어야 합니다. ', () => {
-        const products: Product[] = [
-          { id: '1', name: 'Product 1', price: 100, stock: 10, discounts: [] },
-        ];
+      test('제품 개수에 영향 없이 해당 제품에 대한 수정이 되어야 합니다. ', () => {
+        const products: Product[] = [...mockProducts];
         const updatedProduct = { ...products[0], name: 'Updated Product' };
-  
         const result = productUtils.updateProductInfo(products, updatedProduct);
-        expect(result).toHaveLength(1);
+        expect(result).toHaveLength(3);
         expect(result[0]).toEqual({
           ...products[0],
           name: "Updated Product",
