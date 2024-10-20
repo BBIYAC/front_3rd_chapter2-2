@@ -1,9 +1,9 @@
-import { CartItem, Coupon, Discount, Product } from '../../types.ts';
+import { Coupon, Product } from '../../types.ts';
 import { useCart } from "../hooks";
 import { 
-  calculateAppliedMaxDiscount, 
-  calculateMaxDiscount, 
-  calculateRemainingStock
+  getAppliedDiscount, 
+  getMaxDiscount, 
+  getRemainingStock
 } from '../services/cartService.ts';
 
 interface Props {
@@ -21,11 +21,6 @@ export const CartPage = ({ products, coupons }: Props) => {
     calculateTotal,
     selectedCoupon
   } = useCart();
-
-  const getRemainingStock = (product: Product) => calculateRemainingStock(cart, product);
-  const getMaxDiscount = (discounts: Discount[]) => calculateMaxDiscount(discounts);
-  const getAppliedDiscount = (item: CartItem) => calculateAppliedMaxDiscount(item);
-  
   const { 
     totalBeforeDiscount, 
     totalAfterDiscount, 
@@ -40,7 +35,7 @@ export const CartPage = ({ products, coupons }: Props) => {
           <h2 className="text-2xl font-semibold mb-4">상품 목록</h2>
           <div className="space-y-2">
             {products.map(product => {
-              const remainingStock = getRemainingStock(product);
+              const remainingStock = getRemainingStock(cart, product);
               return (
                 <div key={product.id} data-testid={`product-${product.id}`} className="bg-white p-3 rounded shadow">
                   <div className="flex justify-between items-center mb-2">

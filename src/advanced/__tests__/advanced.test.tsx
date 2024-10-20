@@ -318,26 +318,26 @@ describe('advanced > ', () => {
     };
     const cart: CartItem[] = [{product, quantity: 10}];
 
-    describe('calculateRemainingStock > ', () => {
-      test('장바구니에 담긴 상태에서 제품에 대한 재고가 계산되어야 합니다.', () => {
+    describe('getRemainingStock > ', () => {
+      test('장바구니에 담긴 상태에서 제품에 대한 재고가 반환되어야 합니다.', () => {
         
-        const result = cartService.calculateRemainingStock(cart, product);
+        const result = cartService.getRemainingStock(cart, product);
         expect(result).toBe(40);
       });
     })
 
-    describe('calculateMaxDiscount > ', () => {
-      test('할인 목록 중 최대 할인율이 계산되어야 합니다.', () => {
+    describe('getMaxDiscount > ', () => {
+      test('할인 목록 중 최대 할인율이 반환되어야 합니다.', () => {
         const { discounts } = product;
-        const result = cartService.calculateMaxDiscount(discounts);
+        const result = cartService.getMaxDiscount(discounts);
         expect(result).toBe(0.2);
       });
     })
 
-    describe('calculateAppliedMaxDiscount > ', () => {
-      test('적용 가능한 최대 할인율이 계산되어야 합니다. ', () => {
+    describe('getAppliedDiscount > ', () => {
+      test('적용 가능한 최대 할인율이 반환되어야 합니다. ', () => {
         const [item] = cart;
-        const result = cartService.calculateAppliedMaxDiscount(item);
+        const result = cartService.getAppliedDiscount(item);
         expect(result).toBe(0.1);
       });
     })
