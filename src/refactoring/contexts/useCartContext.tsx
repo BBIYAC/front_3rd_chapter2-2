@@ -16,13 +16,11 @@ interface ICartContextType {
   selectedCoupon: ICoupon | null;
 }
 
-const CartContext = createContext<ICartContextType | undefined>(undefined);
+const CartContext = createContext<ICartContextType | null>(null);
 
 export const CartProvider = ({ children }: IProps) => {
   return (
-    <CartContext.Provider value={useCart()}>
-      {children}
-    </CartContext.Provider>
+    <CartContext.Provider value={useCart()}>{children}</CartContext.Provider>
   );
 };
 
@@ -30,7 +28,7 @@ export const useCartContext = () => {
   const context = useContext(CartContext);
 
   if (!context) {
-    throw new Error('useCartContext must be used within a CartProvider');
+    throw new Error("useCartContext must be used within a CartProvider");
   }
 
   return context;

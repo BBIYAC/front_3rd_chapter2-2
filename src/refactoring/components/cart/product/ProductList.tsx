@@ -1,14 +1,13 @@
 import { IProduct } from "../../../../types.ts";
+import { useProductContext } from "../../../contexts/useProductContext.tsx";
 import { Product } from "./Product.tsx";
 
-interface IProps {
-  products: IProduct[];
-}
+export const ProductList = () => {
+  const { products } = useProductContext();
 
-export const ProductList = ({ products }: IProps) => {
   return (
     <div className="space-y-2">
-      {products.map((product) => (
+      {products.map((product: IProduct) => (
         <Product key={product.id} product={product} />
       ))}
     </div>

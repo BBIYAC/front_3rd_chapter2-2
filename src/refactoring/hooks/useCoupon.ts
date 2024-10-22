@@ -4,9 +4,25 @@ import { addCouponItem } from "./utils/couponUtils.ts";
 
 export const useCoupons = (initialCoupons: ICoupon[]) => {
   const [coupons, setCoupons] = useState<ICoupon[]>(initialCoupons);
+  const [newCoupon, setNewCoupon] = useState<ICoupon>({
+    name: "",
+    code: "",
+    discountType: "percentage",
+    discountValue: 0
+  });
 
   const addCoupon = (newCoupon: ICoupon) => {
     setCoupons((prevCoupons) => addCouponItem(prevCoupons, newCoupon));
   };
-  return { coupons, addCoupon };
+
+  const handleAddCoupon = () => {
+    addCoupon(newCoupon);
+    setNewCoupon({
+      name: "",
+      code: "",
+      discountType: "percentage",
+      discountValue: 0
+    });
+  };
+  return { coupons, newCoupon, setNewCoupon, handleAddCoupon };
 };

@@ -1,12 +1,9 @@
-import { ICoupon } from "../../../../types.ts";
 import { useCartContext } from "../../../contexts/useCartContext.tsx";
+import { useCouponContext } from "../../../contexts/useCouponContext.tsx";
 
-interface IProps {
-  coupons: ICoupon[];
-}
-
-export const Coupon = ({ coupons }: IProps) => {
+export const Coupon = () => {
   const { applyCoupon, selectedCoupon } = useCartContext();
+  const { coupons } = useCouponContext();
 
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">
