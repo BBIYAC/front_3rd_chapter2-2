@@ -1,11 +1,11 @@
-import { ICoupon } from "../../types.ts";
-import { useCartContext } from "../contexts/useCartContext.tsx";
+import { ICoupon } from "../../../types.ts";
+import { useCartContext } from "../../contexts/useCartContext.tsx";
 
 interface IProps {
-  coupons: ICoupon[]
+  coupons: ICoupon[];
 }
 
-export const Coupon = ({coupons}: IProps) => {
+export const Coupon = ({ coupons }: IProps) => {
   const { applyCoupon, selectedCoupon } = useCartContext();
 
   return (
@@ -18,14 +18,20 @@ export const Coupon = ({coupons}: IProps) => {
         <option value="">쿠폰 선택</option>
         {coupons.map((coupon, index) => (
           <option key={coupon.code} value={index}>
-            {coupon.name} - {coupon.discountType === 'amount' ? `${coupon.discountValue}원` : `${coupon.discountValue}%`}
+            {coupon.name} -{" "}
+            {coupon.discountType === "amount"
+              ? `${coupon.discountValue}원`
+              : `${coupon.discountValue}%`}
           </option>
         ))}
       </select>
       {selectedCoupon && (
         <p className="text-green-600">
-          적용된 쿠폰: {selectedCoupon.name}
-          ({selectedCoupon.discountType === 'amount' ? `${selectedCoupon.discountValue}원` : `${selectedCoupon.discountValue}%`} 할인)
+          적용된 쿠폰: {selectedCoupon.name}(
+          {selectedCoupon.discountType === "amount"
+            ? `${selectedCoupon.discountValue}원`
+            : `${selectedCoupon.discountValue}%`}{" "}
+          할인)
         </p>
       )}
     </div>

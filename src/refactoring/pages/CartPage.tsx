@@ -1,9 +1,9 @@
-import { ICoupon, IProduct } from '../../types.ts';
-import { CartProvider } from '../contexts/useCartContext.tsx';
-import { CartItemList } from './CartItemList.tsx';
-import { Coupon } from './Coupon.tsx';
-import { ProductList } from './ProductList.tsx';
-import { Total } from './Total.tsx';
+import { ICoupon, IProduct } from "../../types.ts";
+import { CartProvider } from "../contexts/useCartContext.tsx";
+import { CartItemList } from "../components/cart/CartItemList.tsx";
+import { Coupon } from "../components/coupon/Coupon.tsx";
+import { ProductList } from "../components/product/ProductList.tsx";
+import { Total } from "../components/total/Total.tsx";
 
 interface IProps {
   products: IProduct[];
@@ -11,7 +11,6 @@ interface IProps {
 }
 
 export const CartPage = ({ products, coupons }: IProps) => {
-
   return (
     <CartProvider>
       <div className="container mx-auto p-4">
