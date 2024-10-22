@@ -1,4 +1,4 @@
-import { IProduct } from "../../../types.ts";
+import { IProduct } from "../../../../types.ts";
 import { Product } from "./Product.tsx";
 
 interface IProps {

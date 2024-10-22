@@ -1,4 +1,4 @@
-import { useCartContext } from "../../contexts/useCartContext.tsx";
+import { useCartContext } from "../../../contexts/useCartContext.tsx";
 
 export const Total = () => {
   const { calculateTotal } = useCartContext();

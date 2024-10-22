@@ -1,6 +1,6 @@
-import { ICartItem } from "../../../types.ts";
-import { useCartContext } from "../../contexts/useCartContext.tsx";
-import { getAppliedDiscount } from "../../services/cartService.ts";
+import { ICartItem } from "../../../../types.ts";
+import { useCartContext } from "../../../contexts/useCartContext.tsx";
+import { getAppliedDiscount } from "../../../services/cartService.ts";
 
 interface IProps {
   item: ICartItem;

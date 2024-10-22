@@ -1,9 +1,9 @@
 import { ICoupon, IProduct } from "../../types.ts";
 import { CartProvider } from "../contexts/useCartContext.tsx";
-import { CartItemList } from "../components/cart/CartItemList.tsx";
-import { Coupon } from "../components/coupon/Coupon.tsx";
-import { ProductList } from "../components/product/ProductList.tsx";
-import { Total } from "../components/total/Total.tsx";
+import { CartItemList } from "../components/cart/cart-item/CartItemList.tsx";
+import { Coupon } from "../components/cart/coupon/Coupon.tsx";
+import { ProductList } from "../components/cart/product/ProductList.tsx";
+import { Total } from "../components/cart/total/Total.tsx";
 
 interface IProps {
   products: IProduct[];

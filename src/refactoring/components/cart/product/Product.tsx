@@ -1,9 +1,9 @@
-import { IProduct } from "../../../types.ts";
-import { useCartContext } from "../../contexts/useCartContext.tsx";
+import { IProduct } from "../../../../types.ts";
+import { useCartContext } from "../../../contexts/useCartContext.tsx";
 import {
   getMaxDiscount,
   getRemainingStock
-} from "../../services/cartService.ts";
+} from "../../../services/cartService.ts";
 
 interface IProps {
   key: string;

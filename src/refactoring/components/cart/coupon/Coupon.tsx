@@ -1,5 +1,5 @@
-import { ICoupon } from "../../../types.ts";
-import { useCartContext } from "../../contexts/useCartContext.tsx";
+import { ICoupon } from "../../../../types.ts";
+import { useCartContext } from "../../../contexts/useCartContext.tsx";
 
 interface IProps {
   coupons: ICoupon[];
