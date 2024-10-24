@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IDiscount, IProduct } from "../../types.ts";
-import { addProductItem, updateProductInfo } from "./utils/productUtils.ts";
+import { addProductId, addProductItem, editProductInfo, findProduct, removeDiscount, updateProductInfo } from "./utils/productUtils.ts";
 import { useProductStore } from "../store/store.ts";
 
 export const useProducts = () => {
@@ -57,7 +57,7 @@ export const useProducts = () => {
   // 새로운 핸들러 함수 추가
   const handlePriceUpdate = (productId: string, newPrice: number) => {
     if (editingProduct && editingProduct.id === productId) {
-      const updatedProduct = { ...editingProduct, price: newPrice };
+      const updatedProduct = editProductInfo(editingProduct, { price: newPrice });
       setEditingProduct(updatedProduct);
     }
   };
@@ -71,21 +71,20 @@ export const useProducts = () => {
   };
 
   const handleStockUpdate = (productId: string, newStock: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
+    const updatedProduct = findProduct(products, productId);
     if (updatedProduct) {
-      const newProduct = { ...updatedProduct, stock: newStock };
+      const newProduct = editProductInfo(updatedProduct, { stock: newStock });
       updateProduct(newProduct);
       setEditingProduct(newProduct);
     }
   };
 
   const handleAddDiscount = (productId: string) => {
-    const updatedProduct = products.find((p) => p.id === productId);
+    const updatedProduct = findProduct(products, productId);
     if (updatedProduct && editingProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: [...updatedProduct.discounts, newDiscount]
-      };
+      const newProduct = editProductInfo(updatedProduct, { 
+        discounts: [...updatedProduct.discounts, newDiscount] 
+      });
       updateProduct(newProduct);
       setEditingProduct(newProduct);
       setNewDiscount({ quantity: 0, rate: 0 });
@@ -93,19 +92,19 @@ export const useProducts = () => {
   };
 
   const handleRemoveDiscount = (productId: string, index: number) => {
-    const updatedProduct = products.find((p) => p.id === productId);
+    const updatedProduct = findProduct(products, productId);
     if (updatedProduct) {
-      const newProduct = {
-        ...updatedProduct,
-        discounts: updatedProduct.discounts.filter((_, i) => i !== index)
-      };
+      const newProduct = editProductInfo(updatedProduct, { 
+        discounts: removeDiscount(updatedProduct.discounts, index)
+      });
       updateProduct(newProduct);
       setEditingProduct(newProduct);
     }
   };
 
   const handleAddNewProduct = () => {
-    const productWithId = { ...newProduct, id: Date.now().toString() };
+    const newProductId = Date.now().toString();
+    const productWithId = addProductId(newProduct, newProductId);
     addProduct(productWithId);
     setNewProduct({
       name: "",
