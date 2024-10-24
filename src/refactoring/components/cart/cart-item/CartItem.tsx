@@ -1,5 +1,5 @@
 import { ICartItem } from "../../../../types.ts";
-import { useCartContext } from "../../../contexts/useCartContext.tsx";
+import { useCart } from "../../../hooks/useCart.ts";
 import { getAppliedDiscount } from "../../../services/cartService.ts";
 
 interface IProps {
@@ -7,7 +7,7 @@ interface IProps {
 }
 
 export const CartItem = ({ item }: IProps) => {
-  const { updateQuantity, removeFromCart } = useCartContext();
+  const { updateQuantity, removeFromCart } = useCart();
   const appliedDiscount = getAppliedDiscount(item);
 
   return (

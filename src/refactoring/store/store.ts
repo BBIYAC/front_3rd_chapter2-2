@@ -1,10 +1,21 @@
 import { create } from "zustand";
 import { ICartItem, ICoupon, IProduct } from "../../types";
 
-interface IStore {
+interface ICartStore {
   cart: ICartItem[];
+  setCart: (updateFn: (prevCart: ICartItem[]) => ICartItem[]) => void;
+}
+
+interface IProductStore {
   products: IProduct[];
+  setProducts: (updateFn: (prevProduct: IProduct[]) => IProduct[]) => void;
+}
+
+interface ICouponStore {
   coupons: ICoupon[];
+  selectedCoupon: ICoupon | null,
+  setCoupons: (updateFn: (prevCoupon: ICoupon[]) => ICoupon[]) => void;
+  setSelectedCoupon: (coupon: ICoupon) => void;
 }
 
 const initialProducts: IProduct[] = [
@@ -49,15 +60,27 @@ const initialCoupons: ICoupon[] = [
   }
 ];
 
-const useStore = create((set) => ({
+const useCartStore = create<ICartStore>((set) => ({
   cart: [],
-  products: [...initialProducts],
-  coupons: [...initialCoupons],
-
-  setCart: (newCart: ICartItem[]) => set(() => ({ cart: newCart })),
-  setProducts: (newProducts: IProduct[]) =>
-    set(() => ({ products: newProducts })),
-  setCoupons: (newCoupons: ICoupon[]) => set(() => ({ products: newCoupons }))
+  setCart: (updateFn) => set((state) => ({
+    cart: updateFn(state.cart),
+  })),
 }));
 
-export default useStore;
+const useProductStore = create<IProductStore>((set) => ({
+  products: [...initialProducts],
+  setProducts: (updateFn) => set((state) => ({
+    products: updateFn(state.products),
+  })),
+}));
+
+const useCouponStore = create<ICouponStore>((set) => ({
+  coupons: [...initialCoupons],
+  selectedCoupon: null,
+  setCoupons: (updateFn) => set((state) => ({
+    coupons: updateFn(state.coupons),
+  })),
+  setSelectedCoupon: (coupon: ICoupon) => set({ selectedCoupon: coupon }),
+}));
+
+export {useCartStore, useProductStore, useCouponStore}

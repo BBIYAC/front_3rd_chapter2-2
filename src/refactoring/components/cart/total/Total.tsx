@@ -1,7 +1,7 @@
-import { useCartContext } from "../../../contexts/useCartContext.tsx";
+import { useCart } from "../../../hooks/useCart.ts";
 
 export const Total = () => {
-  const { calculateTotal } = useCartContext();
+  const { calculateTotal } = useCart();
   const { totalBeforeDiscount, totalAfterDiscount, totalDiscount } =
     calculateTotal();
 

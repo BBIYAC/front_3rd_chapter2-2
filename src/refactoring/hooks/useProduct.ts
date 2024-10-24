@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { IDiscount, IProduct } from "../../types.ts";
 import { addProductItem, updateProductInfo } from "./utils/productUtils.ts";
+import { useProductStore } from "../store/store.ts";
 
-export const useProducts = (initialProducts: IProduct[]) => {
-  const [products, setProducts] = useState<IProduct[]>(initialProducts);
+export const useProducts = () => {
+  const {products, setProducts} = useProductStore();
   const [openProductIds, setOpenProductIds] = useState<Set<string>>(new Set());
   const [editingProduct, setEditingProduct] = useState<IProduct | null>(null);
   const [newDiscount, setNewDiscount] = useState<IDiscount>({
@@ -117,6 +118,8 @@ export const useProducts = (initialProducts: IProduct[]) => {
 
   return {
     products,
+    addProduct,
+    updateProduct,
     showNewProductForm,
     setShowNewProductForm,
     newProduct,

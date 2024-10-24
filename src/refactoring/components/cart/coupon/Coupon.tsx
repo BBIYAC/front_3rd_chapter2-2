@@ -1,9 +1,9 @@
-import { useCartContext } from "../../../contexts/useCartContext.tsx";
-import { useCouponContext } from "../../../contexts/useCouponContext.tsx";
+import { useCart } from "../../../hooks/useCart.ts";
+import { useCoupons } from "../../../hooks/useCoupon.ts";
 
 export const Coupon = () => {
-  const { applyCoupon, selectedCoupon } = useCartContext();
-  const { coupons } = useCouponContext();
+  const { applyCoupon, selectedCoupon } = useCart();
+  const { coupons } = useCoupons();
 
   return (
     <div className="mt-6 bg-white p-4 rounded shadow">

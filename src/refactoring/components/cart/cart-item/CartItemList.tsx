@@ -1,8 +1,8 @@
-import { useCartContext } from "../../../contexts/useCartContext.tsx";
+import { useCart } from "../../../hooks/useCart.ts";
 import { CartItem } from "./CartItem.tsx";
 
 export const CartItemList = () => {
-  const { cart } = useCartContext();
+  const { cart } = useCart();
 
   return (
     <div className="space-y-2">

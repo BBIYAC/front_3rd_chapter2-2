@@ -1,8 +1,8 @@
-import { useCouponContext } from "../../../contexts/useCouponContext";
+import { useCoupons } from "../../../hooks";
 
 export const CouponManager = () => {
   const { coupons, newCoupon, setNewCoupon, handleAddCoupon } =
-    useCouponContext();
+    useCoupons();
 
   return (
     <div>

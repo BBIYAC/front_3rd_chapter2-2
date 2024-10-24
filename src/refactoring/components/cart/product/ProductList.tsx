@@ -1,9 +1,9 @@
 import { IProduct } from "../../../../types.ts";
-import { useProductContext } from "../../../contexts/useProductContext.tsx";
+import { useProducts } from "../../../hooks/useProduct.ts";
 import { Product } from "./Product.tsx";
 
 export const ProductList = () => {
-  const { products } = useProductContext();
+  const { products } = useProducts();
 
   return (
     <div className="space-y-2">

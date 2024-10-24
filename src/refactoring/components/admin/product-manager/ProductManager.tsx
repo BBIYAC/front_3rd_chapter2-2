@@ -1,5 +1,5 @@
 import { IDiscount } from "../../../../types";
-import { useProductContext } from "../../../contexts/useProductContext";
+import { useProducts } from "../../../hooks";
 
 export const ProductManager = () => {
   const {
@@ -21,7 +21,7 @@ export const ProductManager = () => {
     handleAddDiscount,
     handleEditComplete,
     handleEditProduct
-  } = useProductContext();
+  } = useProducts();
 
   return (
     <div>

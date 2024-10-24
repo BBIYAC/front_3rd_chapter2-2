@@ -1,5 +1,5 @@
 import { IProduct } from "../../../../types.ts";
-import { useCartContext } from "../../../contexts/useCartContext.tsx";
+import { useCart } from "../../../hooks/useCart.ts";
 import {
   getMaxDiscount,
   getRemainingStock
@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export const Product = ({ product }: IProps) => {
-  const { cart, addToCart } = useCartContext();
+  const { cart, addToCart } = useCart();
   const remainingStock = getRemainingStock(cart, product);
 
   return (
