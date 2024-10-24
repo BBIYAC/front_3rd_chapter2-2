@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { describe, expect, test } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 import {
   act,
   fireEvent,
@@ -13,6 +12,7 @@ import { AdminPage } from "../../refactoring/pages/AdminPage";
 import { ICartItem, ICoupon, IProduct } from "../../types";
 import { useCart, useCoupons, useProducts } from "../../refactoring/hooks";
 import * as cartUtils from "../../refactoring/hooks/utils/cartUtils";
+import { useCartStore, useCouponStore, useProductStore } from "../../refactoring/store/store";
 
 const mockProducts: IProduct[] = [
   {
@@ -52,39 +52,16 @@ const mockCoupons: ICoupon[] = [
   }
 ];
 
-const TestAdminPage = () => {
-  const [products, setProducts] = useState<IProduct[]>(mockProducts);
-  const [coupons, setCoupons] = useState<ICoupon[]>(mockCoupons);
-
-  const handleProductUpdate = (updatedProduct: IProduct) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
-  };
-
-  const handleProductAdd = (newProduct: IProduct) => {
-    setProducts((prevProducts) => [...prevProducts, newProduct]);
-  };
-
-  const handleCouponAdd = (newCoupon: ICoupon) => {
-    setCoupons((prevCoupons) => [...prevCoupons, newCoupon]);
-  };
-
-  return (
-    <AdminPage
-      products={products}
-      coupons={coupons}
-      onProductUpdate={handleProductUpdate}
-      onProductAdd={handleProductAdd}
-      onCouponAdd={handleCouponAdd}
-    />
-  );
-};
-
 describe("basic > ", () => {
   describe("시나리오 테스트 > ", () => {
+    beforeEach(() => {
+      useProductStore.setState({ products: [...mockProducts] });
+      useCouponStore.setState({ coupons: [...mockCoupons], selectedCoupon: null });
+      useCartStore.setState({ cart: [] })
+    });
+    
     test("장바구니 페이지 테스트 > ", async () => {
-      render(<CartPage products={mockProducts} coupons={mockCoupons} />);
+      render(<CartPage />);
       const product1 = screen.getByTestId("product-p1");
       const product2 = screen.getByTestId("product-p2");
       const product3 = screen.getByTestId("product-p3");
@@ -164,7 +141,7 @@ describe("basic > ", () => {
     });
 
     test("관리자 페이지 테스트 > ", async () => {
-      render(<TestAdminPage />);
+      render(<AdminPage />);
 
       const $product1 = screen.getByTestId("product-1");
 
@@ -274,14 +251,15 @@ describe("basic > ", () => {
     const initialProducts: IProduct[] = [
       { id: "1", name: "Product 1", price: 100, stock: 10, discounts: [] }
     ];
-
+    
     test("특정 제품으로 초기화할 수 있다.", () => {
-      const { result } = renderHook(() => useProducts(initialProducts));
+      useProductStore.setState({ products: [...initialProducts] });
+      const { result } = renderHook(() => useProducts());
       expect(result.current.products).toEqual(initialProducts);
     });
 
     test("제품을 업데이트할 수 있다.", () => {
-      const { result } = renderHook(() => useProducts(initialProducts));
+      const { result } = renderHook(() => useProducts());
       const updatedProduct = { ...initialProducts[0], name: "Updated Product" };
 
       act(() => {
@@ -298,7 +276,7 @@ describe("basic > ", () => {
     });
 
     test("새로운 제품을 추가할 수 있다.", () => {
-      const { result } = renderHook(() => useProducts(initialProducts));
+      const { result } = renderHook(() => useProducts());
       const newProduct: IProduct = {
         id: "2",
         name: "New Product",
@@ -318,12 +296,13 @@ describe("basic > ", () => {
 
   describe("useCoupons > ", () => {
     test("쿠폰을 초기화할 수 있다.", () => {
-      const { result } = renderHook(() => useCoupons(mockCoupons));
+      useCouponStore.setState({ coupons: [...mockCoupons], selectedCoupon: null });
+      const { result } = renderHook(() => useCoupons());
       expect(result.current.coupons).toEqual(mockCoupons);
     });
 
     test("쿠폰을 추가할 수 있다", () => {
-      const { result } = renderHook(() => useCoupons(mockCoupons));
+      const { result } = renderHook(() => useCoupons());
       const newCoupon: ICoupon = {
         name: "New Coupon",
         code: "NEWCODE",
